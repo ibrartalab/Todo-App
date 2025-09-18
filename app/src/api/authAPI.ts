@@ -1,14 +1,19 @@
-import { axiosInstance } from "../config/axiosInstance";
-import type { AuthLoginInput, AuthResponse, AuthSignupInput } from "../features/auth/types";
+import type { AuthLoginPayload, AuthResponse, AuthSignupPayload } from "../features/auth/types";
 
 // Function to handle user login
-export async function login(data: AuthLoginInput) {
-  const response = await axiosInstance.post<AuthResponse>("/Auth/login", data);
+export async function login(payload: AuthLoginPayload) {
+  const {username,password,axiosPrivate} = payload;
+  const loginPayload = {
+    username,
+    password
+  }
+  const response = await axiosPrivate.post<AuthResponse>("/Auth/login", loginPayload);
   return response;
 }
 // Function to handle user signup
-export async function signUp(data: AuthSignupInput) {
-  const response = await axiosInstance.post<AuthResponse>(
+export async function signUp(payload: AuthSignupPayload) {
+  const {axiosPrivate,...data} = payload;
+  const response = await axiosPrivate.post<AuthResponse>(
     "/Auth/register",
     data
   );

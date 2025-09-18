@@ -4,22 +4,27 @@ import Button from "../components/Button";
 import { useAuth } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router";
 import { Loader } from "../components/Loader";
-import type { AuthSignupInput } from "../features/auth/types";
+import type { AxiosInstance } from "axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import type { AuthSignupPayload } from "../features/auth/types";
 
-const initialState: AuthSignupInput = {
-  firstName: "",
-  lastName: "",
-  username: "",
-  email: "",
-  password: "",
+
+
+const initialState = {
+  firstName: "root",
+  lastName: "user",
+  username: "rootuser",
+  email: "root@gmail.com",
+  password: "root1234",
+  axiosPrivate: {} as AxiosInstance
 };
 
 const SignUpForm = () => {
-  //states
-  // const { validateForm, formErrors, isValid } = useFormValidator();
+  const axiosPrivate = useAxiosPrivate();
   const { signup, loading } = useAuth();
-  const [formData, setFormData] = useState<AuthSignupInput>({
+  const [formData, setFormData] = useState<AuthSignupPayload>({
     ...initialState,
+    axiosPrivate: axiosPrivate
   });
   const navigate = useNavigate();
 
@@ -53,6 +58,7 @@ const SignUpForm = () => {
       username: formData.username,
       email: formData.email,
       password: formData.password,
+      axiosPrivate: formData.axiosPrivate,
     });
 
     if(response?.status == 200) {
@@ -64,11 +70,11 @@ const SignUpForm = () => {
   return (
     <>
       <div className="auth-signup_form flex justify-center items-center mt-24">
-        <div className="form_container " onSubmit={handleSignUp}>
+        <div className="form_container " >
           <form
             action=""
             className="form_fields "
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSignUp}
           >
             <div className="email_password_confirm-password  flex flex-col *:w-80">
               <h1 className="text-lg font-medium text-center">

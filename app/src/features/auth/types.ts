@@ -1,4 +1,10 @@
+import type { AxiosInstance } from "axios";
+
 // This file defines the types related to user management in the application.
+interface CommonThunkPayload {
+  axiosPrivate:AxiosInstance;
+}
+
 export interface User{
     id: string;
     firstName: string;
@@ -7,12 +13,12 @@ export interface User{
     email: string;
     createdAt: string;
 }
-export interface AuthLoginInput {
+export interface AuthLoginPayload extends CommonThunkPayload {
   username: string;
   password: string;
 }
 
-export interface AuthSignupInput {
+export interface AuthSignupPayload extends CommonThunkPayload {
   firstName: string;
   lastName: string;
   username: string;

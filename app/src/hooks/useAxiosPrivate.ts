@@ -1,6 +1,6 @@
 // hooks/useAxiosPrivate.js
 import { useEffect } from "react";
-import { axiosPrivate } from "../config/axiosInstance";
+import { axiosPrivate } from "../config/axios/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "./redux/reduxHooks";
 

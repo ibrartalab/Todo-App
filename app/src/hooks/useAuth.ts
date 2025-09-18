@@ -4,21 +4,21 @@ import {
   login as apiLogin,
   signUp as apiSignup,
 } from "../api/authAPI";
-import { useDispatch } from "react-redux";
 import { setCredentials } from "../features/auth/authSlice";
-import type { AuthLoginInput, AuthSignupInput } from "../features/auth/types";
+import type { AuthLoginPayload, AuthSignupPayload } from "../features/auth/types";
+import { useAppDispatch } from "./redux/reduxHooks";
 
 export function useAuth() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   //Handle user login
-  const login = async (input: AuthLoginInput) => {
+  const login = async (payload: AuthLoginPayload) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await apiLogin(input);
+      const response = await apiLogin(payload);
       // Add some basic validation
       if(!response.data){
         throw new Error("Invalid response data");
@@ -43,11 +43,11 @@ export function useAuth() {
   };
 
   // Handle user signup
-  const signup = async (input: AuthSignupInput) => {
+  const signup = async (payload: AuthSignupPayload) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await apiSignup(input);
+      const response = await apiSignup(payload);
       // Add some basic validation
       if (!response.data) {
         throw new Error("Invalid response data");
@@ -61,7 +61,8 @@ export function useAuth() {
       dispatch(
         setCredentials({
           accessToken: response.data.token,
-          user: response.data.user.userName, // or user object depending on your reducer
+          user: response.data.user.userName,
+          userId: response.data.user.id,
         })
       );
 

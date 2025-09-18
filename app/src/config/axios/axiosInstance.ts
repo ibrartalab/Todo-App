@@ -1,6 +1,5 @@
 import axios, { type AxiosInstance } from "axios";
-import { secrets } from "./secrets";
-import store from "../store/store";
+import { secrets } from "../secrets";
 
 const { BACKEND_URL } = secrets;
 
@@ -26,17 +25,5 @@ export const axiosPrivate: AxiosInstance = axios.create({
   },
 });
 
-axiosPrivate.interceptors.request.use((config) => {
-  const state = store.getState();
-  const token = state.auth.accessToken;
-
-  if(token && !config.headers.Authorization) {
-    config.headers['Authorization'] = `Bearer ${token}`;
-  }
-  return config;
-}
-, (error) => {
-  return Promise.reject(error);
-})
 export default axiosPrivate;
 // export default axiosInstance;
