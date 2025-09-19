@@ -1,9 +1,5 @@
 import type { AxiosInstance } from "axios";
 
-interface CommonThunkPayload{
-  axiosPrivate:AxiosInstance;
-}
-
 export interface Todo {
   id: number;
   todo: string;

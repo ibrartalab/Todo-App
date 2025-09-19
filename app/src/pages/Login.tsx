@@ -5,20 +5,16 @@ import { Link, useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 import { Loader } from "../components/Loader";
 import type { AuthLoginPayload } from "../features/auth/types";
-import type { AxiosInstance } from "axios";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const initialValues: AuthLoginPayload = {
   username: "rootuser",
-  password: "root1234",
-  axiosPrivate: {} as AxiosInstance,
+  password: "root1234"
 };
 
 const LoginForm = () => {
-  const axiosPrivate = useAxiosPrivate();
+  
   const [formData, setFormData] = useState<AuthLoginPayload>({
     ...initialValues,
-    axiosPrivate: axiosPrivate,
   });
   const { login, loading } = useAuth();
   const navigate = useNavigate();
@@ -47,11 +43,7 @@ const LoginForm = () => {
       return;
     }
 
-    const response = await login({
-      username: formData.username,
-      password: formData.password,
-      axiosPrivate: formData.axiosPrivate,
-    });
+    const response = await login(formData);
 
     console.log("Login response data:", response);
     if (response?.status == 200) {

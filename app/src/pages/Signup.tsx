@@ -4,39 +4,32 @@ import Button from "../components/Button";
 import { useAuth } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router";
 import { Loader } from "../components/Loader";
-import type { AxiosInstance } from "axios";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import type { AuthSignupPayload } from "../features/auth/types";
 
-
-
-const initialState = {
+const initialState:AuthSignupPayload = {
   firstName: "root",
   lastName: "user",
   username: "rootuser",
   email: "root@gmail.com",
   password: "root1234",
-  axiosPrivate: {} as AxiosInstance
 };
 
 const SignUpForm = () => {
-  const axiosPrivate = useAxiosPrivate();
   const { signup, loading } = useAuth();
   const [formData, setFormData] = useState<AuthSignupPayload>({
     ...initialState,
-    axiosPrivate: axiosPrivate
   });
   const navigate = useNavigate();
 
   //function to handle input changes
   const handleInputChange = useMemo(() => {
-    return (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
       // Validate the input value
       setFormData((prev) => ({ ...prev, [name]: value }));
     };
   }, []);
-  
+
   //if loading return loader
   if (loading) {
     return <Loader />;
@@ -44,7 +37,7 @@ const SignUpForm = () => {
 
   //function to handle signup
   // This function will be called when the user clicks the "Get Started" button
-  const handleSignUp = async (e:React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent default form submission behavior
     // Logic to handle signup
     if (formData.username.trim() === "" || formData.password.trim() === "") {
@@ -52,16 +45,10 @@ const SignUpForm = () => {
       return;
     }
     // Call the signup function from useAuth hook
-    const response = await signup({
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      username: formData.username,
-      email: formData.email,
-      password: formData.password,
-      axiosPrivate: formData.axiosPrivate,
-    });
+    const response = await signup(formData);
+    console.log("Signup response data:", formData);
 
-    if(response?.status == 200) {
+    if (response?.status == 200) {
       // Redirect to dashboard after successful signup
       navigate(`/login`);
     }
@@ -70,12 +57,8 @@ const SignUpForm = () => {
   return (
     <>
       <div className="auth-signup_form flex justify-center items-center mt-24">
-        <div className="form_container " >
-          <form
-            action=""
-            className="form_fields "
-            onSubmit={handleSignUp}
-          >
+        <div className="form_container ">
+          <form action="" className="form_fields " onSubmit={handleSignUp}>
             <div className="email_password_confirm-password  flex flex-col *:w-80">
               <h1 className="text-lg font-medium text-center">
                 Create Your Account
@@ -126,7 +109,7 @@ const SignUpForm = () => {
                 styleClass="text-black h-8"
               />
               <Button
-              type='submit'
+                type="submit"
                 title="Get Started"
                 styleClass={`text-white font-semibold h-12 mt-4 bg-indigo-600 hover:bg-indigo-400 w-full rounded-md`}
                 disabled={false}

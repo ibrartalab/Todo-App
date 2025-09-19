@@ -50,7 +50,7 @@ function App() {
                         </PrivateRoutes>
                       }
                       >
-                        {/* Index route for dashbiard */}
+                        {/* Index route for dashboard */}
                         <Route index path="todos" element={<UserDashbaord />} />
                         {/* Add more nested routes here if needed */}
                         <Route path="analytics" element={<AnalyticsPage/>}/>

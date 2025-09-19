@@ -11,7 +11,7 @@ export const axiosInstance: AxiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
-    "Access-Control-Allow-Origin": "*", // Adjust CORS settings as needed
+    "Access-Control-Allow-Origin": "*",
   },
 });
 
@@ -22,6 +22,7 @@ export const axiosPrivate: AxiosInstance = axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
     "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Credentials": "true",
   },
 });
 
