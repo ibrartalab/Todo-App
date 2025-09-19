@@ -1,15 +1,21 @@
 import { useContext, useEffect, useState } from "react";
-import Button from "../Button";
+import Button from "../../Button";
 import { FaCheck, FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { SearchContext } from "../../context/SearchContext";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux/reduxHooks";
+import { SearchContext } from "../../../context/SearchContext";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../hooks/redux/reduxHooks";
 import EditTodo from "./EditTodo";
-import { fetchTodosByUserId, updateTodo } from "../../features/todos/todoSlice";
+import {
+  fetchTodosByUserId,
+  updateTodo,
+} from "../../../features/todos/todoSlice";
 
-import { Loader } from "../Loader";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import type { Todo, UpdateTodoPayload } from "../../features/todos/types";
+import { Loader } from "../../Loader";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import type { Todo, UpdateTodoPayload } from "../../../features/todos/types";
 
 export const TodoItem = () => {
   const { searchParam, filters } = useContext(SearchContext);
@@ -52,22 +58,23 @@ export const TodoItem = () => {
   // Function to handle marking a todo item as completed or active
   // This function will be called when the user clicks the checkbox
   // It updates the todo item's status and completed date
-  const handleMarkTodo = async (todoToMark:Todo) => {
+  const handleMarkTodo = async (todoToMark: Todo) => {
     try {
-      const updatePayload:UpdateTodoPayload = {
-        id:todoToMark.id,
-        updatedFields:{
-          todo:todoToMark.todo,
-          isCompleted:!todoToMark.isCompleted,
-          completedAt:!todoToMark.completedAt ? new Date().toISOString() :  null,
+      const updatePayload: UpdateTodoPayload = {
+        id: todoToMark.id,
+        updatedFields: {
+          todo: todoToMark.todo,
+          isCompleted: !todoToMark.isCompleted,
+          completedAt: !todoToMark.completedAt
+            ? new Date().toISOString()
+            : null,
         },
-        axiosPrivate
       };
       const response = await dispatch(
-        updateTodo(updatePayload)
+        updateTodo({ payload: updatePayload, axiosPrivate })
       );
       if (response.meta.requestStatus === "fulfilled") {
-        console.log("Updated successfully!")
+        console.log("Updated successfully!");
       }
     } catch (error) {
       console.error(error);
@@ -76,15 +83,14 @@ export const TodoItem = () => {
 
   // Function to handle deleting a todo item
   // This function will be called when the user clicks the delete button
-  const handleDeleteTodo = async (todoToDelete:Todo) => {
+  const handleDeleteTodo = async (todoToDelete: Todo) => {
     try {
-      const updatePayload:UpdateTodoPayload = {
-        id:todoToDelete.id,
-        updatedFields:{isRemoved:true,todo:todoToDelete.todo},
-        axiosPrivate
-      }
+      const updatePayload: UpdateTodoPayload = {
+        id: todoToDelete.id,
+        updatedFields: { isRemoved: true, todo: todoToDelete.todo },
+      };
       const response = await dispatch(
-        updateTodo(updatePayload)
+        updateTodo({ payload: updatePayload, axiosPrivate })
       );
       if (response.meta.requestStatus === "fulfilled") {
         console.log("Todo item deleted");
@@ -95,14 +101,14 @@ export const TodoItem = () => {
   };
 
   useEffect(() => {
-    console.log("user todos",userTodos);
-    console.log("filtered todos",filteredTodos)
-  },[userTodos,filteredTodos])
+    console.log("user todos", userTodos);
+    console.log("filtered todos", filteredTodos);
+  }, [userTodos, filteredTodos]);
   //// Fetch todos by user ID when the component mounts
   // Assuming you have a userId available in your Redux store or context
   useEffect(() => {
     if (userId) {
-      dispatch(fetchTodosByUserId({ userId, axiosPrivate }));
+      dispatch(fetchTodosByUserId({ payload: { userId }, axiosPrivate }));
     } else if (!userId) {
       console.warn("User ID not available for fetching todos.");
     }
@@ -114,7 +120,8 @@ export const TodoItem = () => {
       {loading && <Loader />}
       {userTodos.length === 0 && (
         <div className="w-full h-full flex justify-center items-center text-lg font-bold">
-          You haven't added any tasks yet. Get started by adding your first to-do!
+          You haven't added any tasks yet. Get started by adding your first
+          to-do!
         </div>
       )}
       {filteredTodos.map((todo) => (
@@ -129,7 +136,7 @@ export const TodoItem = () => {
           <div className="item-wrapper">
             <div className="todo-item-wrapper w-full h-10 flex justify-center items-center">
               <div
-                className={`todo w-3/5 h-10 p-2 flex justify-between rounded-md bg-gray-200 text-black`}
+                className={`todo w-96 h-10 p-2 flex justify-between rounded-md bg-gray-200 text-black`}
               >
                 <div className="w-8 h-full flex justify-center items-center">
                   <Button

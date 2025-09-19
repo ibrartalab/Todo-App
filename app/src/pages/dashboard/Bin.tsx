@@ -23,11 +23,11 @@ const Bin = () => {
     const updatePayload:UpdateTodoPayload = {
       id:todoToRestore.id,
       updatedFields:{
+        todo:todoToRestore.todo,
         isRemoved:false
-      },
-      axiosPrivate
+      }
     }
-    const response = await dispatch(updateTodo(updatePayload));
+    const response = await dispatch(updateTodo({payload:updatePayload,axiosPrivate}));
     if (response.meta.requestStatus === "fulfilled") {
       console.log("Restore")
     }
@@ -39,11 +39,10 @@ const Bin = () => {
     if (!id) throw new Error("Id is required!");
 
     const updatePayload:DeleteTodoPayload = {
-      id:id,
-      axiosPrivate
+      id:id
     }
 
-    const response = await dispatch(deleteTodo(updatePayload));
+    const response = await dispatch(deleteTodo({payload:updatePayload,axiosPrivate}));
     if (response.meta.requestStatus === "fulfilled") {
       console.log("Item is deleted successfully!");
       return response;
@@ -51,7 +50,17 @@ const Bin = () => {
   };
 
   return (
-    <div className="removed-todos-in-bin-wrapper w-full h-full py-2 flex flex-col items-center gap-2 overflow-y-scroll ">
+    <div className="bin-wrappe w-full">
+      <h1 className="text-lg font-semibold underline text-indigo-500 py-4">
+        Bin - Removed Todos
+      </h1>
+      {filteredTodos.length === 0 && (
+        <div className="no-todos-in-bin w-full h-full flex justify-center items-center mt-40">
+          <h2 className="text-md font-medium">No todos in bin</h2>
+        </div>
+      )}
+      {filteredTodos.length > 0 && (
+        <div className="removed-todos-in-bin-wrapper w-full h-full py-2 flex flex-col items-center gap-2 overflow-y-scroll ">
       {filteredTodos.map((todo) => (
         <div key={todo.id} className="todo-item-container bg-gray-200 flex justify-between items-center w-2/3 h-10 p-2 rounded-sm">
           <div className="item w-4/6 text-black">{todo.todo}</div>
@@ -73,6 +82,8 @@ const Bin = () => {
           </div>
         </div>
       ))}
+    </div>
+      )}
     </div>
   );
 };

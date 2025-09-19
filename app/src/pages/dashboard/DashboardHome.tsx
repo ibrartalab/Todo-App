@@ -1,5 +1,5 @@
-import { AddTodo } from "../../components/dashboard/AddTodo";
-import TodoList from "../../components/dashboard/TodoList";
+import { AddTodo } from "../../components/dashboard/todos/AddTodo";
+import TodoList from "../../components/dashboard/todos/TodoList";
 
 const DashboardHome = () => {
   return (

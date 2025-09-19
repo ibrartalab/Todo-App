@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux/reduxHooks";
-import { createTodo } from "../../features/todos/todoSlice";
-import Input from "../Input";
-import Button from "../Button";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux/reduxHooks";
+import { createTodo } from "../../../features/todos/todoSlice";
+import Input from "../../Input";
+import Button from "../../Button";
 // import { useFetchUserTodos } from "../../hooks/useFetchUserTodos";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 export const AddTodo = () => {
   const [todoName, setTodoName] = useState<string>("");
@@ -38,7 +38,7 @@ export const AddTodo = () => {
     };
     setTodoName("");
     await dispatch(
-      createTodo({ newTodo:data, axiosPrivate })
+      createTodo({payload:{newTodo:data},axiosPrivate:axiosPrivate})
     );
     
   };
@@ -55,7 +55,7 @@ export const AddTodo = () => {
   return (
     <div>
       <div className="input-todo-add w-full flex justify-center items-center gap-2">
-        <div className="w-3/6">
+        <div className="w-80">
           <Input
             label=""
             placeholder="Take a note..."

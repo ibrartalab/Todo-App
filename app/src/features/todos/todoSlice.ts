@@ -12,6 +12,7 @@ import type {
   Todo,
   UpdateTodoPayload,
 } from "./types";
+import type { AxiosInstance } from "axios";
 
 // --- State Interfaces ---
 interface TodosState {
@@ -42,10 +43,10 @@ const initialState: TodosState = {
 // Async thunk: fetch todos by user ID
 export const fetchTodosByUserId = createAsyncThunk(
   "todos/fetchTodosByUserId",
-  async (payload: FetchTodosByUserIdPayload) => {
+  async ({payload,axiosPrivate}:{payload: FetchTodosByUserIdPayload,axiosPrivate:AxiosInstance}) => {
     try {
       // todoApi.getTodosByUserId now expects the entire payload object
-      const todos = await todoApi.getTodosByUserId(payload);
+      const todos = await todoApi.getTodosByUserId(payload,axiosPrivate);
       return todos;
     } catch (error) {
       console.log(error);
@@ -56,10 +57,10 @@ export const fetchTodosByUserId = createAsyncThunk(
 // Async thunk: create a new todo
 export const createTodo = createAsyncThunk(
   "todos/createTodo",
-  async (payload: CreateToDoPayload) => {
+  async ({payload,axiosPrivate}:{payload: CreateToDoPayload,axiosPrivate:AxiosInstance}) => {
     try {
       // todoApi.addTodo now expects the entire payload object
-      const todo = await todoApi.addTodo(payload);
+      const todo = await todoApi.addTodo(payload,axiosPrivate);
       return todo;
     } catch (error) {
       console.log(error);
@@ -70,10 +71,10 @@ export const createTodo = createAsyncThunk(
 // Async thunk: update an existing todo
 export const updateTodo = createAsyncThunk(
   "todos/updateTodo",
-  async (payload: UpdateTodoPayload) => {
+  async ({payload,axiosPrivate}:{payload: UpdateTodoPayload,axiosPrivate:AxiosInstance}) => {
     try {
       // todoApi.updateTodo now expects the entire payload object
-      const updatedTodo = await todoApi.updateTodo(payload);
+      const updatedTodo = await todoApi.updateTodo(payload,axiosPrivate);
       return updatedTodo; // Ensure API returns the full updated object
     } catch (error) {
       console.log(error);
@@ -84,9 +85,9 @@ export const updateTodo = createAsyncThunk(
 // Async thunk: delete a todo
 export const deleteTodo = createAsyncThunk(
   "todos/deleteTodo",
-  async (payload: DeleteTodoPayload) => {
+  async ({payload,axiosPrivate}:{payload: DeleteTodoPayload,axiosPrivate:AxiosInstance}) => {
     try {
-      await todoApi.deleteTodo(payload);
+      await todoApi.deleteTodo(payload,axiosPrivate);
       return payload.id;
     } catch (error) {
       console.log(error);

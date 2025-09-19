@@ -1,11 +1,11 @@
 import { MdOutlineCancel } from "react-icons/md";
-import Button from "../Button";
-import Input from "../Input";
+import Button from "../../Button";
+import Input from "../../Input";
 import { useState } from "react";
-import { useAppDispatch } from "../../hooks/redux/reduxHooks";
-import type { FetchTodosByUserIdPayload, Todo, UpdateTodoPayload } from "../../features/todos/types";
-import { updateTodo, fetchTodosByUserId } from "../../features/todos/todoSlice";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useAppDispatch } from "../../../hooks/redux/reduxHooks";
+import type { FetchTodosByUserIdPayload, Todo, UpdateTodoPayload } from "../../../features/todos/types";
+import { updateTodo, fetchTodosByUserId } from "../../../features/todos/todoSlice";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 interface EditTodoProps {
   id: number;
@@ -23,24 +23,20 @@ const EditTodo = ({ id, requestedData, onClose }: EditTodoProps) => {
     try {
       const updatePayload: UpdateTodoPayload = {
         id: id,
-        updatedFields: {
-          todo: editedTodo,
-        },
-        axiosPrivate,
+        updatedFields: { todo: editedTodo },
       };
 
-      const response = await dispatch(updateTodo(updatePayload));
+      const response = await dispatch(updateTodo({payload:updatePayload,axiosPrivate}));
       if (response.meta.requestStatus === "fulfilled") {
         if (!userId) {
           throw new Error("userId must to provide");
         }
 
         const fetchTodosPayload:FetchTodosByUserIdPayload = {
-          userId:userId,
-          axiosPrivate
+          userId: userId,
         }
         if (userId) {
-          await dispatch(fetchTodosByUserId(fetchTodosPayload));
+          await dispatch(fetchTodosByUserId({payload:fetchTodosPayload,axiosPrivate}));
         }
         // close modal
         onClose();

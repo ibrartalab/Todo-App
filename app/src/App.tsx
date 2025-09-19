@@ -18,6 +18,7 @@ const SignupPage = lazy(() => import("./pages/Signup"));
 const UserDashbaord = lazy(() => import("./pages/dashboard/DashboardHome"));
 const AnalyticsPage = lazy(() => import("./pages/dashboard/Analytics"));
 const BinPage = lazy(() => import("./pages/dashboard/Bin"));
+const SettingsPage = lazy(() => import("./pages/dashboard/Settings"));
 
 function App() {
   
@@ -55,6 +56,7 @@ function App() {
                         {/* Add more nested routes here if needed */}
                         <Route path="analytics" element={<AnalyticsPage/>}/>
                         <Route path="bin" element={<BinPage/>} />
+                        <Route path="settings" element={<SettingsPage/>} />
                       </Route>
                     </Routes>
                   </Suspense>

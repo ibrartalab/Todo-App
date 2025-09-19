@@ -36,6 +36,14 @@ export const Sidebar = () => {
           >
             Bin
           </NavLink>
+          <NavLink
+            to={`/dashboard/${username}/settings`}
+            className={({ isActive }) =>
+              isActive ? "text-indigo-400" : "hover:text-indigo-300"
+            }
+          >
+            Settings
+          </NavLink>
         </div>
         <div className="h-1/4 w-full place-content-end">
           <NavLink

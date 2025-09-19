@@ -1,5 +1,3 @@
-import type { AxiosInstance } from "axios";
-
 export interface Todo {
   id: number;
   todo: string;
@@ -10,20 +8,20 @@ export interface Todo {
   completedAt?: string | null;
 }
 
-export interface FetchTodosByUserIdPayload extends CommonThunkPayload{
+export interface FetchTodosByUserIdPayload{
   userId:string;
 }
 
-export interface CreateToDoPayload extends CommonThunkPayload{
+export interface CreateToDoPayload{
   newTodo:Omit<Todo,"id" | "isCompleted" | "isRemoved" | "createdAt" | "completedAt">;
 }
 
-export interface UpdateTodoPayload extends CommonThunkPayload {
+export interface UpdateTodoPayload{
   id:number;
   updatedFields:Partial<Omit<Todo,"id" | "userId" | "createdAt">>;
 }
 
-export interface DeleteTodoPayload extends CommonThunkPayload{
+export interface DeleteTodoPayload{
   id:number;
 }
 

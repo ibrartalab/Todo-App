@@ -12,7 +12,7 @@ export const DashboardLayout = () => {
         <Header />
         <div className="dashboard-content flex w-full h-full">
           <Sidebar />
-          <main className="w-full h- px-10">
+          <main className="w-full px-10">
            { /*All childs components will be rendernd here*/}
             <Outlet />
           </main>
